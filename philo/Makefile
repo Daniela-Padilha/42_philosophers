@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+         #
+#    By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/25 16:38:56 by ddo-carm          #+#    #+#              #
-#    Updated: 2025/06/03 13:35:20 by ddo-carm         ###   ########.fr        #
+#    Updated: 2025/06/12 17:56:01 by ddo-carm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ INC_DIR = ./inc
 SRC = $(SRCS_D)/main.c \
 		$(SRCS_D)/philo_utils.c \
 		$(SRCS_D)/init.c \
+		$(SRCS_D)/routine.c \
+		$(SRCS_D)/actions.c \
 
 #object files
 OBJ = $(SRC:.c=.o)
@@ -40,6 +42,7 @@ OBJ = $(SRC:.c=.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
+THREAD_FLAGS = -pthread
 HEADER = -I $(INC_DIR)
 RM = rm -f
 VAL = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
@@ -54,11 +57,11 @@ VAL = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 all: $(NAME) 
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(HEADER) -lpthread $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) $(HEADER) $(OBJ) -o $(NAME)
 	@echo $(BGRN)"✨Compilation completed✨"$(RES)
 
-%.o: %.c $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	@$(CC) $(CFLAGS) $(THREAD_FLAGS) $(HEADER) -c $< -o $@
 	@echo $(BMAG)"Compiling..."$(RES)
 
 #          ________________________________________________

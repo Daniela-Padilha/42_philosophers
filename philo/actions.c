@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/03 11:57:34 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/12 17:48:18 by ddo-carm         ###   ########.fr       */
+/*   Created: 2025/06/12 17:30:15 by ddo-carm          #+#    #+#             */
+/*   Updated: 2025/06/12 17:59:05 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/philo.h"
 
-void	init_philos(t_philos *philos, int ac, char **av)
+void	think(t_philos *philos)
 {
-	philos->philo_nbr = 0;
-	philos->time_to_die = ft_atoi(av[2]);
-	philos->time_to_eat = ft_atoi(av[3]);
-	philos->time_to_sleep = ft_atoi(av[4]);
-	if (ac == 6)
-		philos->eat_times = ft_atoi(av[5]);
-	else
-		philos->eat_times = 0;
-	philos->eaten = false;
-	philos->alive = true;
+	while (philos->alive)
+		usleep(100);
+}
+
+void	eat(t_philos *philos)
+{
+	usleep(philos->time_to_eat);
+	printf("i am eating");
+}
+
+void	sleeping(t_philos *philos)
+{
+	usleep(philos->time_to_sleep);
 }

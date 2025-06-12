@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:14:42 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/03 14:56:20 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:53:01 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	main(int ac, char **av)
 {
 	t_philos	*philos;
 	int			total;
-	int			i;
 
 	if (arg_check(ac, av) == -1)
 		return (0);
@@ -27,19 +26,7 @@ int	main(int ac, char **av)
 		if (!philos)
 			return (0);
 		init_philos(philos, ac, av);
-		start(philos, av[1]);
-	}
-	i = 0;
-	while (i < total)
-	{
-		pthread_create(&philos[i].thread, NULL, routine, (void *)&philos[i]);
-		i++;
-	}
-	i = 0;
-	while (i < total)
-	{
-		pthread_join(&philos[i].thread, NULL);
-		i++;
+		start(philos, av[1], total);
 	}
 	free_struct((void *)philos);
 	return (0);
@@ -69,20 +56,24 @@ int	arg_check(int ac, char **av)
 	return (0);
 }
 
-void	start(t_philos *philos, char *philo)
+void	start(t_philos *philos, char *philo, int total)
 {
-	int				nbr;
 	int				i;
 	struct	timeval tv;
 
-	nbr = ft_atoi(philo);
-	i = 1;
-	while (i <= nbr)
+	total = ft_atoi(philo);
+	i = 0;
+	while (i < total)
 	{
 		gettimeofday(&tv, NULL);
-		printf("%li philosopher number: %i\n", tv.tv_usec, i);
+		pthread_create(&philos[i].thread, NULL, routine, (void *)&philos[i]);
 		i++;
 	}
-	printf("and %i forks\n", nbr);
-	free_struct((void *)philos);
+	i = 0;
+	while (i < total)
+	{
+		gettimeofday(&tv, NULL);
+		pthread_join(philos[i].thread, NULL);
+		i++;
+	}
 }

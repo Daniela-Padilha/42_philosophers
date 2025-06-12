@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:36:54 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/03 15:10:41 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/12 18:00:59 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,44 @@
 
 void	*routine (void *arg)
 {
-	t_philos	*philo;
+	t_philos	*philos;
 
-	philo = (t_philos *)arg;
-	while (alive(philo))
+	philos = (t_philos *)arg;
+	while (alive(philos))
 	{
-		think(philo);
-		grab_forks(philo);
-		eat(philo);
-		release_forks(philo);
-		sleep(philo);
+		think(philos);
+		grab_forks(philos);
+		eat(philos);
+		release_forks(philos);
+		sleeping(philos);
 	}
 	return (NULL);
 }
 
-think()
+int	alive(t_philos *philos)
 {
-	
+	usleep (philos->time_to_die);
+	if (philos->eaten)
+	{
+		philos->alive = true;
+		return (1);
+	}
+	else
+	{
+		philos->alive = false;
+		return (0);
+	}
+}
+void	grab_forks(t_philos *philos)
+{
+	pthread_mutex_lock(philos->left_fork);
+	pthread_mutex_lock(philos->right_fork);
+	printf("i am grabing forks");
 }
 
-eat()
+void	release_forks(t_philos *philos)
 {
-
-}
-
-sleep()
-{
-
+	pthread_mutex_unlock(philos->left_fork);
+	pthread_mutex_unlock(philos->right_fork);
+	printf("i am releasing forks");
 }
