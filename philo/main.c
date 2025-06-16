@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:14:42 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/16 18:23:07 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:48:58 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av)
 		init_philos(philos, ac, av);
 		start(philos, total_philos);
 	}
-	free_struct((void *)philos);
+	free_and_destroy(philos);
 	return (0);
 }
 

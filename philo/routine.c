@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:36:54 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/12 18:00:59 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:40:23 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	*routine (void *arg)
 	t_philos	*philos;
 
 	philos = (t_philos *)arg;
-	while (alive(philos))
+	while (philos->alive)
 	{
 		think(philos);
 		grab_forks(philos);
@@ -28,20 +28,6 @@ void	*routine (void *arg)
 	return (NULL);
 }
 
-int	alive(t_philos *philos)
-{
-	usleep (philos->time_to_die);
-	if (philos->eaten)
-	{
-		philos->alive = true;
-		return (1);
-	}
-	else
-	{
-		philos->alive = false;
-		return (0);
-	}
-}
 void	grab_forks(t_philos *philos)
 {
 	pthread_mutex_lock(philos->left_fork);

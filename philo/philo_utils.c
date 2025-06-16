@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:16:53 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/16 17:48:52 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:48:21 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,11 @@ int	ft_isdigit(int c)
 		return (0);
 }
 
-void	*free_struct(void *lst)
+void	free_and_destroy(t_philos *philos)
 {
-	if (lst)
-		free(lst);
-	return (NULL);
+	if (philos)
+		free(philos);
+	pthread_mutex_destroy(philos->print);
+	pthread_mutex_destroy(philos->left_fork);
+	pthread_mutex_destroy(philos->right_fork);
 }

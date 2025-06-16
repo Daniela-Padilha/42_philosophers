@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:35:33 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/16 17:47:59 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:51:14 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,19 @@
 # include <stdbool.h>
 
 typedef struct s_philos {
+	int				id;
 	int				philo_nbr;
 	bool			eaten;
 	bool			alive;
-	int				time_to_eat;
-	int				time_to_die;
-	int				time_to_sleep;
+	size_t			time_to_eat;
+	size_t			time_to_die;
+	size_t			time_to_sleep;
 	int				eat_times;
 	int				times_eaten;
 	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*print;
 }	t_philos;
 
 //main
@@ -58,6 +60,6 @@ void	sleeping(t_philos *philos);
 long	ft_atol(const char *nptr);
 int		ft_atoi(const char *nptr);
 int		ft_isdigit(int c);
-void	*free_struct(void *lst);
+void	free_and_destroy(t_philos *philos);
 
 #endif
