@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:14:42 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/12 17:53:01 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/16 18:23:07 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 int	main(int ac, char **av)
 {
 	t_philos	*philos;
-	int			total;
+	int			total_philos;
 
 	if (arg_check(ac, av) == -1)
 		return (0);
 	else
 	{
-		total = ft_atoi(av[1]);
-		philos = malloc(sizeof(t_philos) * total);
+		total_philos = ft_atoi(av[1]);
+		philos = malloc(sizeof(t_philos) * total_philos);
 		if (!philos)
 			return (0);
 		init_philos(philos, ac, av);
-		start(philos, av[1], total);
+		start(philos, total_philos);
 	}
 	free_struct((void *)philos);
 	return (0);
@@ -34,9 +34,35 @@ int	main(int ac, char **av)
 
 int	arg_check(int ac, char **av)
 {
+	int	total_philos;
+	int	tmp;
+	int	i;
+
+	if (ac < 5)
+		return (printf("Invalid: Missing arguments\n"), -1);
+	else if (ac > 6)
+		return (printf("Invalid: Too many arguments\n"), -1);
+	if (parsing(av) == -1)
+		return (-1);
+	total_philos = ft_atoi(av[1]);
+	if (total_philos > 200)
+		return (printf("Invalid: Too many philos\n"), -1);
+	i = 2;
+	while (av[i] && i < 5)
+	{
+		tmp = ft_atoi(av[i]);
+		if (tmp < 60)
+			return (printf("Invalid: time values must be > 60 ms\n"), -1);
+		i++;
+	}
+	return (0);
+}
+
+int	parsing(char **av)
+{
 	int	i;
 	int	j;
-
+	
 	i = 1;
 	while (av[i])
 	{
@@ -44,24 +70,27 @@ int	arg_check(int ac, char **av)
 		while (av[i][j])
 		{
 			if (!ft_isdigit(av[i][j]))
-				return (printf("Non numeric arguments\n"), -1);
+				return (printf("Invalid: Non numeric arguments\n"), -1);
+			if (*av[i] == '0')
+			{
+				if (i == 5)
+					break ;
+				else
+					return (printf("Invalid: Negative arguments\n"), -1);
+			}
 			j++;
 		}
 		i++;
 	}
-	if (ac < 5)
-		return (printf("Missing arguments\n"), -1);
-	else if (ac > 6)
-		return (printf("Too many arguments\n"), -1);
 	return (0);
 }
 
-void	start(t_philos *philos, char *philo, int total)
+
+void	start(t_philos *philos, int total)
 {
 	int				i;
 	struct	timeval tv;
 
-	total = ft_atoi(philo);
 	i = 0;
 	while (i < total)
 	{

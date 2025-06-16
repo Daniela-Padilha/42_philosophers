@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:35:33 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/12 17:58:07 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/16 17:47:59 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef struct s_philos {
 
 //main
 int		arg_check(int ac, char **av);
-void	start(t_philos *philos, char *philo, int total);
+int		parsing(char **av);
+void	start(t_philos *philos, int total);
 
 //init
 void	init_philos(t_philos *philos, int ac, char **av);
@@ -54,6 +55,7 @@ void	eat(t_philos *philos);
 void	sleeping(t_philos *philos);
 
 //utils
+long	ft_atol(const char *nptr);
 int		ft_atoi(const char *nptr);
 int		ft_isdigit(int c);
 void	*free_struct(void *lst);
