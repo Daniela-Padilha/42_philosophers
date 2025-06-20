@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   waiter.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/25 18:14:42 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/20 18:29:07 by ddo-carm         ###   ########.fr       */
+/*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
+/*   Updated: 2025/06/20 18:27:44 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/philo.h"
 
-int	main(int ac, char **av)
-{
-	t_philos	*philos;
-	int			total_philos;
+//thread that monitors philos
 
-	if (arg_check(ac, av) == -1)
-		return (0);
-	else
+void	waiter(t_philos *philos)
+{
+	while (1)
 	{
-		total_philos = ft_atoi(av[1]);
-		philos = malloc(sizeof(t_philos) * total_philos);
-		if (!philos)
-			return (0);
-		init_philos(philos, ac, av);
-		start(philos, total_philos);
+		
+		if (!philos->alive)
+			break ;
 	}
-	free_and_destroy(philos);
-	return (0);
 }

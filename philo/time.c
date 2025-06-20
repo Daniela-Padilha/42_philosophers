@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/25 18:14:42 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/20 18:29:07 by ddo-carm         ###   ########.fr       */
+/*   Created: 2025/06/20 16:59:20 by ddo-carm          #+#    #+#             */
+/*   Updated: 2025/06/20 18:29:15 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/philo.h"
 
-int	main(int ac, char **av)
-{
-	t_philos	*philos;
-	int			total_philos;
+//get time in milliseconds
 
-	if (arg_check(ac, av) == -1)
-		return (0);
-	else
-	{
-		total_philos = ft_atoi(av[1]);
-		philos = malloc(sizeof(t_philos) * total_philos);
-		if (!philos)
-			return (0);
-		init_philos(philos, ac, av);
-		start(philos, total_philos);
-	}
-	free_and_destroy(philos);
-	return (0);
+size_t	get_time(void)
+{
+	struct	timeval t_value;
+	
+	if (gettimeofday(&t_value, NULL) == -1)
+		write(2, "ERROR: gettimeofday failed\n", 27);
+	return (t_value.tv_sec * 1000 + t_value.tv_usec / 1000);
 }
