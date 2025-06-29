@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:30:15 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 19:14:11 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:28:36 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 void	think(t_philos *philos)
 {
-
 	speak("is thinking", philos, philos->id);
 }
 
@@ -26,18 +25,18 @@ void	eat(t_philos *philos)
 {
 	philos->eating = true;
 	grab_forks(philos);
-	pthread_mutex_lock(philos->eating);
+	pthread_mutex_lock(philos->eating_lock);
 	philos->eating = true;
-	pthread_mutex_unlock(philos->eating);
+	pthread_mutex_unlock(philos->eating_lock);
 	speak("is eating", philos, philos->id);
 	pthread_mutex_lock(philos->meal);
 	philos->last_meal = get_time();
 	philos->meals_eaten++;
 	pthread_mutex_unlock(philos->meal);
 	my_usleep(philos->time_to_eat);
-	pthread_mutex_lock(philos->eating);
+	pthread_mutex_lock(philos->eating_lock);
 	philos->eating = false;
-	pthread_mutex_unlock(philos->eating);
+	pthread_mutex_unlock(philos->eating_lock);
 	release_forks(philos);
 }
 

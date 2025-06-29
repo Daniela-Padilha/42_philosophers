@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:35:33 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 19:11:17 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:35:36 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@
 # include <pthread.h>
 # include <stdbool.h>
 
-#define PHILO_MAX 200
+# define PHILO_MAX 200
 
-typedef struct s_philos {
+typedef struct s_philos
+{
 	pthread_t		thread;
 	int				id;
 	int				total_philos;
@@ -38,16 +39,17 @@ typedef struct s_philos {
 	bool			eating;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*death;
-	pthread_mutex_t	*eating;
+	pthread_mutex_t	*eating_lock;
 	pthread_mutex_t	*meal;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 }	t_philos;
 
-typedef struct s_meal {
+typedef struct s_meal
+{
 	bool			dead_flag;
 	pthread_mutex_t	death;
-	pthread_mutex_t	eating;
+	pthread_mutex_t	eating_lock;
 	pthread_mutex_t	meal;
 	pthread_mutex_t	print;
 	t_philos		*philos;
@@ -60,11 +62,12 @@ int		arg_check_util(char **av);
 //init
 void	init_meal(t_meal *meal, t_philos *philos);
 void	init_forks(pthread_mutex_t *forks, int total_philos);
-void	init_philos(t_philos *philos, t_meal *meal, pthread_mutex_t *forks, char **av);
+void	init_philos(t_philos *philos, t_meal *meal,
+			pthread_mutex_t *forks, char **av);
 void	init_input(t_philos *philos, char **av);
 
 //routine
-void	*routine (void *arg);
+void	*routine(void *arg);
 bool	dead_check(t_philos *philos);
 void	start_meal(t_meal *meal, pthread_mutex_t *forks);
 void	grab_forks(t_philos *philos);

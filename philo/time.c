@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:59:20 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 16:49:07 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:32:13 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 size_t	get_time(void)
 {
-	struct	timeval t_value;
-	
+	struct timeval	t_value;
+
 	if (gettimeofday(&t_value, NULL) == -1)
 		write(2, "ERROR: gettimeofday failed\n", 27);
 	return (t_value.tv_sec * 1000 + t_value.tv_usec / 1000);

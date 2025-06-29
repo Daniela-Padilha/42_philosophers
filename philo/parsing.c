@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 18:23:39 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 15:44:18 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:33:47 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	arg_check_util(char **av)
 {
 	int	i;
 	int	j;
-	
+
 	i = 1;
 	while (av[i])
 	{

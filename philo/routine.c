@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:36:54 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 19:04:35 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:31:48 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //the routine the philos will follow
 
-void	*routine (void *arg)
+void	*routine(void *arg)
 {
 	t_philos	*philos;
 
@@ -64,33 +64,33 @@ void	grab_forks(t_philos *philos)
 
 void	release_forks(t_philos *philos)
 {
-	pthread_mutex_unlock(&philos->left_fork);
-	pthread_mutex_unlock(&philos->right_fork);
+	pthread_mutex_unlock(philos->left_fork);
+	pthread_mutex_unlock(philos->right_fork);
 }
-
 
 //Create threads
 
 void	start_meal(t_meal *meal, pthread_mutex_t *forks)
 {
-	pthread_t	waiter;
+	pthread_t	waiter_thread;
 	int			i;
 
-	if (pthread_create(&waiter, NULL, waiter, meal->philos) != 0)
+	if (pthread_create(&waiter_thread, NULL, waiter, meal->philos) != 0)
 		free_and_destroy("Error: thread creation failed\n", meal, forks);
 	i = 0;
 	while (i < meal->philos[0].total_philos)
 	{
-		if (pthread_create(&meal->philos[i].thread, NULL, routine, (void *)&meal->philos[i]) != 0)
+		if (pthread_create(&meal->philos[i].thread, NULL, routine,
+				(void *)&meal->philos[i]) != 0)
 			free_and_destroy("Error: thread creation failed\n", meal, forks);
 		i++;
 	}
 	i = 0;
-	if (pthread_join(waiter, NULL) != 0)
+	if (pthread_join(waiter_thread, NULL) != 0)
 		free_and_destroy("Error: thread join failed\n", meal, forks);
 	while (i < meal->philos[0].total_philos)
 	{
-		if (pthread_join(meal->philos[i].thread, NULL) != 0);
+		if (pthread_join(meal->philos[i].thread, NULL) != 0)
 			free_and_destroy("Error: thread join failed\n", meal, forks);
 		i++;
 	}

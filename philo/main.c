@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:14:42 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 17:13:09 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:18:19 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int ac, char **av)
 	init_meal(&meal, philos);
 	init_forks(forks, ft_atoi(av[1]));
 	init_philos(philos, &meal, forks, av);
-	start_meal(philos, ft_atoi(av[1]));
+	start_meal(&meal, forks);
 	free_and_destroy(NULL, &meal, forks);
 	return (0);
 }
