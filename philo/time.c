@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:59:20 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 22:32:13 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/30 00:23:19 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	my_usleep(size_t milisec)
 	size_t	start;
 
 	start = get_time();
-	while (get_time() - start < milisec)
+	while ((get_time() - start) < milisec)
 		usleep(500);
 	return (0);
 }

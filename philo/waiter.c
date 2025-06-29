@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 22:56:10 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/30 00:31:22 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	*waiter(void *arg)
 	{
 		if (funeral(philos) == true || no_more_food(philos) == true)
 			break ;
+		my_usleep(500);
 	}
 	return (arg);
 }
@@ -31,14 +32,17 @@ void	*waiter(void *arg)
 
 bool	starved(t_philos *philos, size_t time_to_die)
 {
+	size_t	time_since_meal;
+	bool	is_eating;
+
 	pthread_mutex_lock(philos->meal);
-	if (get_time() - philos->last_meal >= time_to_die
-		&& philos->eating == false)
-	{
-		pthread_mutex_unlock(philos->meal);
-		return (true);
-	}
+	time_since_meal =  get_time() - philos->last_meal;
 	pthread_mutex_unlock(philos->meal);
+	pthread_mutex_lock(philos->eating_lock);
+	is_eating = philos->eating;
+	pthread_mutex_unlock(philos->eating_lock);
+	if (time_since_meal >= time_to_die && is_eating == false)
+		return (true);
 	return (false);
 }
 

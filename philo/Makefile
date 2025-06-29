@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+         #
+#    By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/25 16:38:56 by ddo-carm          #+#    #+#              #
-#    Updated: 2025/06/29 14:50:41 by ddo-carm         ###   ########.fr        #
+#    Updated: 2025/06/29 23:26:10 by ddo-carm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,11 +57,14 @@ VAL = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes
 #  /      |_______________________________________________|     \ 
 # /__________)                                        (__________\ 
 
-all: $(NAME) 
+all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(THREAD_FLAGS) $(HEADER) $(OBJ) -o $(NAME)
 	@echo $(BGRN)"✨Compilation completed✨"$(RES)
+
+valgrind: $(NAME)
+	$(VAL) ./$(NAME) $(ARGS)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) $(THREAD_FLAGS) $(HEADER) -c $< -o $@

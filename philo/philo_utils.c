@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:16:53 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 16:57:04 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 23:33:49 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	free_and_destroy(char *err, t_meal *meal, pthread_mutex_t *forks)
 	pthread_mutex_destroy(&meal->print);
 	pthread_mutex_destroy(&meal->death);
 	pthread_mutex_destroy(&meal->meal);
+	pthread_mutex_destroy(&meal->eating_lock);
 	while (i < meal->philos[0].total_philos)
 	{
 		pthread_mutex_destroy(&forks[i]);
