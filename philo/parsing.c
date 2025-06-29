@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 18:23:39 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/20 18:31:47 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 15:44:18 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	arg_check(int ac, char **av)
 	if (arg_check_util(av) == -1)
 		return (-1);
 	total_philos = ft_atoi(av[1]);
-	if (total_philos > 200)
+	if (total_philos > PHILO_MAX)
 		return (printf("Invalid: Too many philos\n"), -1);
 	i = 2;
 	while (av[i] && i < 5)

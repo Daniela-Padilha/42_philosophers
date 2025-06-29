@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:14:42 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/20 18:29:07 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 17:13:09 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,16 @@
 
 int	main(int ac, char **av)
 {
-	t_philos	*philos;
-	int			total_philos;
+	t_meal			meal;
+	t_philos		philos[PHILO_MAX];
+	pthread_mutex_t	forks[PHILO_MAX];
 
 	if (arg_check(ac, av) == -1)
 		return (0);
-	else
-	{
-		total_philos = ft_atoi(av[1]);
-		philos = malloc(sizeof(t_philos) * total_philos);
-		if (!philos)
-			return (0);
-		init_philos(philos, ac, av);
-		start(philos, total_philos);
-	}
-	free_and_destroy(philos);
+	init_meal(&meal, philos);
+	init_forks(forks, ft_atoi(av[1]));
+	init_philos(philos, &meal, forks, av);
+	start_meal(philos, ft_atoi(av[1]));
+	free_and_destroy(NULL, &meal, forks);
 	return (0);
 }

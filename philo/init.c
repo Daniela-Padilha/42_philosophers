@@ -6,51 +6,78 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:57:34 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/20 18:25:33 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 19:11:48 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/philo.h"
 
-//init philos struct
+//Init meal
 
-void	init_philos(t_philos *philos, int ac, char **av)
+void	init_meal(t_meal *meal, t_philos *philos)
 {
-	philos->id = 0;
-	philos->philo_nbr = ft_atoi(av[1]);
-	philos->time_to_die = ft_atol(av[2]);
-	philos->time_to_eat = ft_atol(av[3]);
-	philos->time_to_sleep = ft_atol(av[4]);
-	if (ac == 6)
-		philos->eat_times = ft_atol(av[5]);
-	else
-		philos->eat_times = 0;
-	philos->eaten = false;
-	philos->alive = true;
-	pthread_mutex_init(&philos->left_fork, NULL);
-	pthread_mutex_init(&philos->right_fork, NULL);
-	pthread_mutex_init(&philos->print, NULL);
+	meal->dead_flag = false;
+	meal->philos = philos;
+	pthread_mutex_init(&meal->death, NULL);
+	pthread_mutex_init(&meal->eating, NULL);
+	pthread_mutex_init(&meal->print, NULL);
+	pthread_mutex_init(&meal->meal, NULL);
 }
 
-//creates the threads
+//Init fork mutexes
 
-void	start(t_philos *philos, int total)
+void	init_forks(pthread_mutex_t *forks, int total_philos)
 {
-	int				i;
-	struct	timeval tv;
+	int	i;
+	
+	i = 0;
+	while (i < total_philos)
+	{
+		pthread_mutex_init(&forks[i], NULL);
+		i++;
+	}
+}
+
+//init philos struct
+
+void	init_philos(t_philos *philos, t_meal *meal, pthread_mutex_t *forks,
+		char **av)
+{
+	int	i;
 
 	i = 0;
-	while (i < total)
+	while (i < ft_atoi(av[1]))
 	{
-		gettimeofday(&tv, NULL);
-		pthread_create(&philos[i].thread, NULL, routine, (void *)&philos[i]);
+		philos[i].id = i + 1;
+		init_input(&philos[i], av);
+		philos[i].meals_eaten = 0;
+		philos[i].last_meal = get_time();
+		philos[i].dinner_start = get_time();
+		philos[i].dead_flag = &meal->dead_flag;
+		philos[i].eating = false;
+		philos[i].print = &meal->print;
+		philos[i].death = &meal->death;
+		philos[i].eating = &meal->eating;
+		philos[i].meal = &meal->meal;
+		philos[i].right_fork = &forks[i];
+		if (i == 0)
+			philos[i].left_fork = &forks[philos[i].total_philos - 1];
+		else
+			philos[i].left_fork = &forks[i - 1];
 		i++;
 	}
-	i = 0;
-	while (i < total)
-	{
-		gettimeofday(&tv, NULL);
-		pthread_join(philos[i].thread, NULL);
-		i++;
-	}
+}
+
+//Init user input
+
+void	init_input(t_philos *philos, char **av)
+{
+		philos->total_philos = ft_atoi(av[1]);
+		philos->time_to_die = ft_atol(av[2]);
+		philos->time_to_eat = ft_atol(av[3]);
+		philos->time_to_sleep = ft_atol(av[4]);
+		if (av[5])
+			philos->total_meals = ft_atol(av[5]);
+		else
+			philos->total_meals = -1;
 }

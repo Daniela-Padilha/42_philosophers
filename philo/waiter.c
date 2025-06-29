@@ -6,20 +6,88 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/20 18:27:44 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 19:14:18 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/philo.h"
 
-//thread that monitors philos
+//thread that monitors when the program should end
 
-void	waiter(t_philos *philos)
+void	*waiter(void *arg)
 {
+	t_philos	*philos;
+
+	philos = (t_philos *)arg;
 	while (1)
 	{
-		
-		if (!philos->alive)
+		if (funeral(philos) == true || no_more_food(philos) == true)
 			break ;
 	}
+	return (arg);
+}
+
+//Check if philo died of starvation
+
+bool	starved(t_philos *philos, size_t time_to_die)
+{
+	pthread_mutex_lock(philos->meal);
+	if (get_time() - philos->last_meal >= time_to_die && philos->eating == false)
+	{	
+		pthread_mutex_unlock(philos->meal);
+		return (true);
+	}
+	pthread_mutex_unlock(philos->meal);
+	return (false);
+}
+
+//Changes the flag of a dead philo and prints message
+
+bool	funeral(t_philos *philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < philos->total_philos)
+	{
+		if (starved(&philos[i], philos[i].time_to_die))
+		{
+			speak("died", &philos[i], philos[i].id);
+			pthread_mutex_lock(philos[0].death);
+			*philos->dead_flag = true;
+			pthread_mutex_unlock(philos[0].death);
+			return (true);
+		}
+		i++;
+	}
+	return (false);
+}
+
+//Checks if everyone ate total_meals
+
+bool	no_more_food(t_philos *philos)
+{
+	int	i;
+	
+	i = 0;
+	if (philos[0].total_meals == -1)
+		return (false);
+	while (i < philos[0].total_philos)
+	{
+		
+	}
+	return (false);
+}
+
+//Prints log
+
+void	speak(char *msg, t_philos *philos, int id)
+{
+	size_t	time;
+	
+	pthread_mutex_lock(&philos->print);
+	time = get_time() - philos->dinner_start;
+	if (!dead_check(philos))
+		printf("%zu %i %s\n", time, id, msg);
+	pthread_mutex_unlock(&philos->print);
 }

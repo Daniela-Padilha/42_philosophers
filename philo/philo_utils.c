@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:16:53 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/20 18:28:58 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 16:57:04 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,36 @@ int	ft_isdigit(int c)
 		return (0);
 }
 
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
 //frees memory and destroys mutexes
 
-void	free_and_destroy(t_philos *philos)
+void	free_and_destroy(char *err, t_meal *meal, pthread_mutex_t *forks)
 {
-	if (philos)
-		free(philos);
-	pthread_mutex_destroy(&philos->print);
-	pthread_mutex_destroy(&philos->left_fork);
-	pthread_mutex_destroy(&philos->right_fork);
+	int	i;
+
+	i = 0;
+	if (err)
+	{
+		write(2, err, ft_strlen(err));
+		write(2, "\n", 1);
+	}
+	pthread_mutex_destroy(&meal->print);
+	pthread_mutex_destroy(&meal->death);
+	pthread_mutex_destroy(&meal->meal);
+	while (i < meal->philos[0].total_philos)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		i++;
+	}
 }

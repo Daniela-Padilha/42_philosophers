@@ -6,7 +6,7 @@
 #    By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/25 16:38:56 by ddo-carm          #+#    #+#              #
-#    Updated: 2025/06/12 17:56:01 by ddo-carm         ###   ########.fr        #
+#    Updated: 2025/06/29 14:50:41 by ddo-carm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,10 +24,13 @@ INC_DIR = ./inc
 
 #source files
 SRC = $(SRCS_D)/main.c \
-		$(SRCS_D)/philo_utils.c \
+		$(SRCS_D)/parsing.c \
 		$(SRCS_D)/init.c \
 		$(SRCS_D)/routine.c \
 		$(SRCS_D)/actions.c \
+		$(SRCS_D)/time.c \
+		$(SRCS_D)/waiter.c \
+		$(SRCS_D)/philo_utils.c \
 
 #object files
 OBJ = $(SRC:.c=.o)
