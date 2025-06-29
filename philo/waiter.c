@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 22:33:27 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/29 22:56:10 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ bool	funeral(t_philos *philos)
 	int	i;
 
 	i = 0;
-	while (i < philos->total_philos)
+	while (i < philos[0].total_philos)
 	{
 		if (starved(&philos[i], philos[i].time_to_die))
 		{
@@ -81,6 +81,7 @@ bool	no_more_food(t_philos *philos)
 		if (philos[i].meals_eaten >= philos[i].total_meals)
 			done_eating++;
 		pthread_mutex_unlock(philos[i].meal);
+		i++;
 	}
 	if (done_eating == philos[0].total_philos)
 	{
