@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:57:34 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 22:45:25 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:46:40 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_meal(t_meal *meal, t_philos *philos)
 {
 	meal->dead_flag = false;
 	meal->philos = philos;
+	pthread_mutex_init(&meal->sync, NULL);
 	pthread_mutex_init(&meal->death, NULL);
 	pthread_mutex_init(&meal->eating_lock, NULL);
 	pthread_mutex_init(&meal->print, NULL);
@@ -55,6 +56,8 @@ void	init_philos(t_philos *philos, t_meal *meal, pthread_mutex_t *forks,
 		philos[i].dinner_start = get_time();
 		philos[i].dead_flag = &meal->dead_flag;
 		philos[i].eating = false;
+		philos[i].threads_ready = false;
+		philos[i].sync = &meal->sync;
 		philos[i].print = &meal->print;
 		philos[i].death = &meal->death;
 		philos[i].eating_lock = &meal->eating_lock;

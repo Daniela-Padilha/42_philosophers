@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:36:54 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 22:31:48 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:48:29 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ void	*routine(void *arg)
 	t_philos	*philos;
 
 	philos = (t_philos *)arg;
+	sync_threads(philos, 1);
 	if (philos->id % 2 == 0)
-		my_usleep(1);
+		my_usleep(100);
 	while (!dead_check(philos))
 	{
 		eat(philos);
@@ -64,6 +65,8 @@ void	grab_forks(t_philos *philos)
 
 void	release_forks(t_philos *philos)
 {
+	if (philos->total_philos == 1)
+		return ;
 	pthread_mutex_unlock(philos->left_fork);
 	pthread_mutex_unlock(philos->right_fork);
 }
@@ -85,6 +88,7 @@ void	start_meal(t_meal *meal, pthread_mutex_t *forks)
 			free_and_destroy("Error: thread creation failed\n", meal, forks);
 		i++;
 	}
+	sync_threads(meal->philos, 0);
 	i = 0;
 	if (pthread_join(waiter_thread, NULL) != 0)
 		free_and_destroy("Error: thread join failed\n", meal, forks);

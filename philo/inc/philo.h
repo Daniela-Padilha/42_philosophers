@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:35:33 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/29 22:35:36 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:47:38 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ typedef struct s_philos
 	size_t			dinner_start;
 	bool			*dead_flag;
 	bool			eating;
+	bool			threads_ready;
+	pthread_mutex_t	*sync;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*death;
 	pthread_mutex_t	*eating_lock;
@@ -48,6 +50,7 @@ typedef struct s_philos
 typedef struct s_meal
 {
 	bool			dead_flag;
+	pthread_mutex_t	sync;
 	pthread_mutex_t	death;
 	pthread_mutex_t	eating_lock;
 	pthread_mutex_t	meal;
@@ -88,6 +91,7 @@ void	speak(char *msg, t_philos *philos, int id);
 //time.c
 size_t	get_time(void);
 int		my_usleep(size_t milisec);
+void	sync_threads(t_philos *philos, int wait);
 
 //utils
 long	ft_atol(const char *nptr);

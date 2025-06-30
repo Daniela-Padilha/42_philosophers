@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:59:20 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/30 00:23:19 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/30 18:48:35 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,24 @@ int	my_usleep(size_t milisec)
 
 	start = get_time();
 	while ((get_time() - start) < milisec)
-		usleep(500);
+		;
 	return (0);
+}
+
+void	sync_threads(t_philos *philos, int wait)
+{
+	if (wait == 1)
+	{
+		pthread_mutex_lock(philos->sync);
+		if (philos->threads_ready == false)
+			my_usleep(50);
+		pthread_mutex_unlock(philos->sync);
+	}
+	else if (wait == 0)
+	{
+		pthread_mutex_lock(philos->sync);
+		philos->threads_ready = true;
+		pthread_mutex_unlock(philos->sync);
+	}
+	return ;
 }

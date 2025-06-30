@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+         #
+#    By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/25 16:38:56 by ddo-carm          #+#    #+#              #
-#    Updated: 2025/06/29 23:26:10 by ddo-carm         ###   ########.fr        #
+#    Updated: 2025/06/30 18:50:25 by ddo-carm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ OBJ = $(SRC:.c=.o)
 
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread 
 THREAD_FLAGS = -pthread
 HEADER = -I $(INC_DIR)
 RM = rm -f

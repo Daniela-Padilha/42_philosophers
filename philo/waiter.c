@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   waiter.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/30 00:31:22 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/06/30 17:06:05 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*waiter(void *arg)
 	{
 		if (funeral(philos) == true || no_more_food(philos) == true)
 			break ;
-		my_usleep(500);
+		// my_usleep(500);
 	}
 	return (arg);
 }
@@ -106,6 +106,6 @@ void	speak(char *msg, t_philos *philos, int id)
 	pthread_mutex_lock(philos->print);
 	time = get_time() - philos->dinner_start;
 	if (!dead_check(philos))
-		printf("%zu %i %s\n", time, id, msg);
+		printf("%zu		%i %s\n", time, id, msg);
 	pthread_mutex_unlock(philos->print);
 }
