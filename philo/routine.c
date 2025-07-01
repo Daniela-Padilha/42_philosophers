@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:36:54 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/30 18:48:29 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/01 18:26:27 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	release_forks(t_philos *philos)
 
 //Create threads
 
-void	start_meal(t_meal *meal, pthread_mutex_t *forks)
+void	start_meal(t_meal *meal)
 {
 	pthread_t	waiter_thread;
 	int			i;
