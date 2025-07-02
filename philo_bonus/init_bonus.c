@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:57:34 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/01 19:00:55 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:21:50 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 t_meal	*init(char **av)
 {
 	t_meal	*meal;
-	int		i;
-
+	
 	meal = (t_meal *)malloc(sizeof(t_meal));
 	if (!meal)
 		return (NULL);
@@ -41,7 +40,7 @@ int	init_meal(t_meal *meal, char **av)
 	meal->forks_sem = sem_open("forks_sem", O_CREAT, 0644, meal->total_philos);
 	if (meal->forks_sem == SEM_FAILED)
 		return (-1);
-	meal->death_sem = sem_open("death_sem", O_CREAT, 0644, 0);
+	meal->death_sem = sem_open("death_sem", O_CREAT, 0644, 1);
 	if (meal->death_sem == SEM_FAILED)
 		return (-1);
 	meal->waiter_sem = sem_open("waiter_sem", O_CREAT, 0644, 1);

@@ -25,23 +25,20 @@
 # include <signal.h>
 # include <fcntl.h>
 
-
-# define PHILO_MAX 200
-
 typedef struct s_philos
 {
-	int			id;
-	pid_t		pid;
-	size_t		time_to_die;
-	size_t		time_to_eat;
-	size_t		time_to_sleep;
-	int			total_meals;
-	int			meals_eaten;
-	size_t		last_meal;
-	size_t		dinner_start;
-	bool		*dead_flag;
-	bool		eating;
-	t_meal		*meal;
+	int				id;
+	pid_t			pid;
+	size_t			time_to_die;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	int				total_meals;
+	int				meals_eaten;
+	size_t			last_meal;
+	size_t			dinner_start;
+	bool			*dead_flag;
+	bool			eating;
+	struct s_meal	*meal;
 }	t_philos;
 
 typedef struct s_meal
@@ -55,43 +52,41 @@ typedef struct s_meal
 	t_philos	*philos;
 }	t_meal;
 
-//parsing
+//parsing_bonus.c
 int		arg_check(int ac, char **av);
 int		arg_check_util(char **av);
 int		ft_isdigit(int c);
 
-//init
+//init_bonus.c
 t_meal	*init(char **av);
 int		init_meal(t_meal *meal, char **av);
 void	init_philos(t_philos *philos, t_meal *meal, char **av);
 void	init_input(t_philos *philos, char **av);
 void	unlink_all(void);
 
-//routine
-void	*routine(void *arg);
-bool	dead_check(t_philos *philos);
+//routine_bonus.c
+void	routine(t_philos *philos);
 void	start_meal(t_meal *meal);
 void	grab_forks(t_meal *meal);
 void	release_forks(t_meal *meal);
 
-//actions
+//actions_bonus.c
 void	think(t_philos *philos);
-void	eat(t_meal *meal);
+void	eat(t_philos *philos);
 void	sleeping(t_philos *philos);
 
-//waiter.c
+//waiter_bonus.c
 void	*waiter(void *arg);
-bool	starved(t_philos *philos, size_t time_to_die);
-bool	funeral(t_philos *philos);
-bool	no_more_food(t_philos *philos);
+bool	no_more_food(t_meal *meal);
 void	speak(char *msg, t_philos *philos, int id);
+int		ft_strcmp(const char *s1, const char *s2);
 
-//time.c
+//time_bonus.c
 size_t	get_time(void);
 int		my_usleep(size_t milisec);
 void	wait_childs(t_meal *meal);
 
-//utils
+//utils_bonus.c
 long	ft_atol(const char *nptr);
 int		ft_atoi(const char *nptr);
 int		ft_strlen(char *str);

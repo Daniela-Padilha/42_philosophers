@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 18:14:42 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/02 16:25:05 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/02 18:29:16 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	main(int ac, char **av)
 	if (arg_check(ac, av) == -1)
 		return (0);
 	meal = init(av);
-	start_meal(&meal);
-	kill_processes(meal);
+	start_meal(meal);
+	// kill_processes(meal);
 	wait_childs(meal);
 	free(meal->philos);
 	free_and_close(NULL, -1, meal, 1);
