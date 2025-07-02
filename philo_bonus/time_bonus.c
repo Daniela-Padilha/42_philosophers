@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:59:20 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/01 18:28:45 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:25:54 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,17 @@ int	my_usleep(size_t milisec)
 	return (0);
 }
 
+//Waits for each child process to finish
 
+void	wait_childs(t_meal *meal)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < meal->total_philos)
+	{
+		waitpid(meal->philos[i].pid, &status, 0);
+		i++;
+	}
+}

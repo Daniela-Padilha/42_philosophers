@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/30 17:06:05 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/02 15:48:47 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	starved(t_philos *philos, size_t time_to_die)
 	bool	is_eating;
 
 	pthread_mutex_lock(philos->meal);
-	time_since_meal =  get_time() - philos->last_meal;
+	time_since_meal = get_time() - philos->last_meal;
 	pthread_mutex_unlock(philos->meal);
 	pthread_mutex_lock(philos->eating_lock);
 	is_eating = philos->eating;

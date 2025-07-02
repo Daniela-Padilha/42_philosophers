@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:30:15 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/01 18:51:35 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:40:05 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ void	think(t_philos *philos)
 
 //makes philos grab forks, eat and release forks
 
-void	eat(t_philos *philos)
+void	eat(t_meal *meal)
 {
-	grab_forks(philos);
-	philos->eating = true;
-	speak("is eating", philos, philos->id);
-	philos->last_meal = get_time();
-	philos->meals_eaten++;
-	my_usleep(philos->time_to_eat);
-	philos->eating = false;
-	release_forks(philos);
+	grab_forks(meal);
+	meal->philos->eating = true;
+	speak("is eating", meal->philos, meal->philos->id);
+	meal->philos->last_meal = get_time();
+	meal->philos->meals_eaten++;
+	my_usleep(meal->philos->time_to_eat);
+	meal->philos->eating = false;
+	release_forks(meal);
 }
 
 //makes philos sleep for a determined amout of time

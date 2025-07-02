@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:36:54 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/01 18:41:07 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:41:23 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,29 +47,28 @@ bool	dead_check(t_philos *philos)
 
 //mutexes to lock the forks when grabed by a philo
 
-void	grab_forks(t_philos *philos)
+void	grab_forks(t_meal *meal)
 {
-	sem_wait(philos->meal->forks_sem);
-	speak("has taken a fork", philos, philos->id);
-	if (philos->total_philos == 1)
+	sem_wait(meal->forks_sem);
+	speak("has taken a fork", meal->philos, meal->philos->id);
+	if (meal->total_philos == 1)
 	{
-		my_usleep(philos->time_to_die);
-		sem_post(philos->meal->forks_sem);
+		my_usleep(meal->philos->time_to_die);
+		sem_post(meal->forks_sem);
 		return ;
 	}
-	sem_wait(philos->meal->forks_sem);
-	speak("has taken a fork", philos, philos->id);
+	sem_wait(meal->forks_sem);
+	speak("has taken a fork", meal->philos, meal->philos->id);
 }
 
 //Unlock the forks when released by a philo
 
-void	release_forks(t_philos *philos)
+void	release_forks(t_meal *meal)
 {
-	if (philos->total_philos == 1)
+	if (meal->total_philos == 1)
 		return ;
-	
-	sem_post(philos->meal->forks_sem);
-	sem_post(philos->meal->forks_sem);
+	sem_post(meal->forks_sem);
+	sem_post(meal->forks_sem);
 }
 
 //Create thread snf processes
@@ -80,7 +79,7 @@ void	start_meal(t_meal *meal)
 	pid_t		pid;
 
 	i = 0;
-	while (i < meal->philos[0].total_philos)
+	while (i < meal->total_philos)
 	{
 		meal->philos[i].pid = fork();
 		if (meal->philos[i].pid == -1)

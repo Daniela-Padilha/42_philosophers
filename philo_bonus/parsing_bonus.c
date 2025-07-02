@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 18:23:39 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/01 18:28:42 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:02:59 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,14 @@ int	arg_check_util(char **av)
 		i++;
 	}
 	return (0);
+}
+
+//checks if a char is digit
+
+int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	else
+		return (0);
 }

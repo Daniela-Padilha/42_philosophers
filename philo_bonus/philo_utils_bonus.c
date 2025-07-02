@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:16:53 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/01 18:28:43 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/02 16:32:36 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,6 @@ int	ft_atoi(const char *nptr)
 	return (nbr * neg);
 }
 
-//checks if a char is digit
-
-int	ft_isdigit(int c)
-{
-	if (c >= 48 && c <= 57)
-		return (1);
-	else
-		return (0);
-}
-
 int	ft_strlen(char *str)
 {
 	int	i;
@@ -88,16 +78,51 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-void	free_and_close(char *err, pid_t pid)
-{
-	int	i;
+//frees memory, closes pid and semaphores, and prints error if needed
 
-	i = 0;
+void	free_and_close(char *err, pid_t pid, t_meal *meal, int free_meal)
+{
 	if (err)
 	{
 		write(2, err, ft_strlen(err));
 		write(2, "\n", 1);
 	}
-	close(pid);
+	if (free_meal)
+	{
+		if (meal)
+		{
+			if (meal->forks_sem)
+				sem_close(meal->forks_sem);
+			if (meal->death_sem)
+				sem_close(meal->death_sem);
+			if (meal->print_sem)
+				sem_close(meal->print_sem);
+			if (meal->waiter_sem)
+				sem_close(meal->waiter_sem);
+			free(meal);
+		}
+	}
+	if (pid != -1)
+		close(pid);
 	return ;
+}
+
+//Kills philo process when the program ends
+
+void	kill_processes(t_meal *meal)
+{
+	int	i;
+
+	i = 0;
+	while (i < meal->total_philos)
+	{
+		sem_wait(meal->death_sem);
+		i++;
+	}
+	i = 0;
+	while (i < meal->total_philos)
+	{
+		kill(meal->philos->pid, SIGKILL);
+		i++;
+	}
 }

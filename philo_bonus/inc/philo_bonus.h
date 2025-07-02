@@ -58,6 +58,7 @@ typedef struct s_meal
 //parsing
 int		arg_check(int ac, char **av);
 int		arg_check_util(char **av);
+int		ft_isdigit(int c);
 
 //init
 t_meal	*init(char **av);
@@ -70,12 +71,12 @@ void	unlink_all(void);
 void	*routine(void *arg);
 bool	dead_check(t_philos *philos);
 void	start_meal(t_meal *meal);
-void	grab_forks(t_philos *philos);
-void	release_forks(t_philos *philos);
+void	grab_forks(t_meal *meal);
+void	release_forks(t_meal *meal);
 
 //actions
 void	think(t_philos *philos);
-void	eat(t_philos *philos);
+void	eat(t_meal *meal);
 void	sleeping(t_philos *philos);
 
 //waiter.c
@@ -88,12 +89,13 @@ void	speak(char *msg, t_philos *philos, int id);
 //time.c
 size_t	get_time(void);
 int		my_usleep(size_t milisec);
+void	wait_childs(t_meal *meal);
 
 //utils
 long	ft_atol(const char *nptr);
 int		ft_atoi(const char *nptr);
-int		ft_isdigit(int c);
 int		ft_strlen(char *str);
-void	free_and_close(char *err, pid_t pid);
+void	free_and_close(char *err, pid_t pid, t_meal *meal, int free_meal);
+void	kill_processes(t_meal *meal);
 
 #endif
