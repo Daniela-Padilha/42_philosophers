@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:35:33 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/30 18:47:38 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/02 17:01:59 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,25 @@ typedef struct s_meal
 	t_philos		*philos;
 }	t_meal;
 
-//parsing
+//parsing.c
 int		arg_check(int ac, char **av);
 int		arg_check_util(char **av);
 
-//init
+//init.c
 void	init_meal(t_meal *meal, t_philos *philos);
 void	init_forks(pthread_mutex_t *forks, int total_philos);
 void	init_philos(t_philos *philos, t_meal *meal,
 			pthread_mutex_t *forks, char **av);
 void	init_input(t_philos *philos, char **av);
 
-//routine
+//routine.c
 void	*routine(void *arg);
 bool	dead_check(t_philos *philos);
 void	start_meal(t_meal *meal, pthread_mutex_t *forks);
 void	grab_forks(t_philos *philos);
 void	release_forks(t_philos *philos);
 
-//actions
+//actions.c
 void	think(t_philos *philos);
 void	eat(t_philos *philos);
 void	sleeping(t_philos *philos);
@@ -93,7 +93,7 @@ size_t	get_time(void);
 int		my_usleep(size_t milisec);
 void	sync_threads(t_philos *philos, int wait);
 
-//utils
+//utils.c
 long	ft_atol(const char *nptr);
 int		ft_atoi(const char *nptr);
 int		ft_isdigit(int c);
