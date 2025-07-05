@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:59:20 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/05 18:42:11 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:50:30 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,12 @@ int	my_usleep(size_t milisec, t_philos *philos)
 	size_t	start;
 
 	start = get_time();
-	while ((get_time() - start) < milisec || !dead_check(philos))
+	while ((get_time() - start) < milisec)
+	{
+		if (dead_check(philos))
+			break ;
 		usleep(50);
+	}
 	return (0);
 }
 
