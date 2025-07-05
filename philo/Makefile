@@ -6,7 +6,7 @@
 #    By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/25 16:38:56 by ddo-carm          #+#    #+#              #
-#    Updated: 2025/06/30 18:50:25 by ddo-carm         ###   ########.fr        #
+#    Updated: 2025/07/05 18:27:57 by ddo-carm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,7 @@ OBJ = $(SRC:.c=.o)
 
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread 
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=thread 
 THREAD_FLAGS = -pthread
 HEADER = -I $(INC_DIR)
 RM = rm -f
@@ -62,9 +62,6 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(THREAD_FLAGS) $(HEADER) $(OBJ) -o $(NAME)
 	@echo $(BGRN)"✨Compilation completed✨"$(RES)
-
-valgrind: $(NAME)
-	$(VAL) ./$(NAME) $(ARGS)
 
 %.o: %.c
 	@$(CC) $(CFLAGS) $(THREAD_FLAGS) $(HEADER) -c $< -o $@

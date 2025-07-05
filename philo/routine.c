@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:36:54 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/01 18:26:27 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:20:41 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*routine(void *arg)
 	philos = (t_philos *)arg;
 	sync_threads(philos, 1);
 	if (philos->id % 2 == 0)
-		my_usleep(100);
+		my_usleep(10, philos);
 	while (!dead_check(philos))
 	{
 		eat(philos);
@@ -49,16 +49,28 @@ bool	dead_check(t_philos *philos)
 
 void	grab_forks(t_philos *philos)
 {
-	pthread_mutex_lock(philos->right_fork);
-	speak("has taken a fork", philos, philos->id);
 	if (philos->total_philos == 1)
 	{
-		my_usleep(philos->time_to_die);
+		pthread_mutex_lock(philos->right_fork);
+		speak("has taken a fork", philos, philos->id);
 		pthread_mutex_unlock(philos->right_fork);
+		my_usleep(philos->time_to_die, philos);
 		return ;
 	}
-	pthread_mutex_lock(philos->left_fork);
-	speak("has taken a fork", philos, philos->id);
+	else if (philos->id % 2 == 0)
+	{
+		pthread_mutex_lock(philos->left_fork);
+		speak("has taken a fork", philos, philos->id);
+		pthread_mutex_lock(philos->right_fork);
+		speak("has taken a fork", philos, philos->id);
+	}
+	else
+	{
+		pthread_mutex_lock(philos->right_fork);
+		speak("has taken a fork", philos, philos->id);
+		pthread_mutex_lock(philos->left_fork);
+		speak("has taken a fork", philos, philos->id);
+	}
 }
 
 //mutexes to unlock the forks when released by a philo
@@ -67,13 +79,21 @@ void	release_forks(t_philos *philos)
 {
 	if (philos->total_philos == 1)
 		return ;
-	pthread_mutex_unlock(philos->left_fork);
-	pthread_mutex_unlock(philos->right_fork);
+	else if (philos->id % 2 == 0)
+	{
+		pthread_mutex_unlock(philos->left_fork);
+		pthread_mutex_unlock(philos->right_fork);
+	}
+	else
+	{
+		pthread_mutex_unlock(philos->right_fork);
+		pthread_mutex_unlock(philos->left_fork);
+	}
 }
 
 //Create threads
 
-void	start_meal(t_meal *meal)
+void	start_meal(t_meal *meal, pthread_mutex_t *forks)
 {
 	pthread_t	waiter_thread;
 	int			i;

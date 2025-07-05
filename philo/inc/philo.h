@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:35:33 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/02 17:01:59 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/05 14:06:39 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	speak(char *msg, t_philos *philos, int id);
 
 //time.c
 size_t	get_time(void);
-int		my_usleep(size_t milisec);
+int		my_usleep(size_t milisec, t_philos *philos);
 void	sync_threads(t_philos *philos, int wait);
 
 //utils.c

@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/02 15:48:47 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:35:27 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,12 @@ void	*waiter(void *arg)
 	t_philos	*philos;
 
 	philos = (t_philos *)arg;
+	sync_threads(philos, 1);
 	while (1)
 	{
 		if (funeral(philos) == true || no_more_food(philos) == true)
 			break ;
-		// my_usleep(500);
+		my_usleep(1, philos);
 	}
 	return (arg);
 }

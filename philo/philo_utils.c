@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:16:53 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/30 18:24:51 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/05 17:15:10 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,5 @@ void	free_and_destroy(char *err, t_meal *meal, pthread_mutex_t *forks)
 		pthread_mutex_destroy(&forks[i]);
 		i++;
 	}
+	return ;
 }

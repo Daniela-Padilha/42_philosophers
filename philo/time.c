@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:59:20 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/06/30 18:48:35 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/05 18:42:11 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,32 @@ size_t	get_time(void)
 
 //Improved sleep function
 
-int	my_usleep(size_t milisec)
+int	my_usleep(size_t milisec, t_philos *philos)
 {
 	size_t	start;
 
 	start = get_time();
-	while ((get_time() - start) < milisec)
-		;
+	while ((get_time() - start) < milisec || !dead_check(philos))
+		usleep(50);
 	return (0);
 }
 
+//make threads wait for all to be ready
 void	sync_threads(t_philos *philos, int wait)
 {
+	bool	ready;
+	
 	if (wait == 1)
 	{
-		pthread_mutex_lock(philos->sync);
-		if (philos->threads_ready == false)
-			my_usleep(50);
-		pthread_mutex_unlock(philos->sync);
+		while (1)
+		{
+			pthread_mutex_lock(philos->sync);
+				ready = philos->threads_ready;
+			pthread_mutex_unlock(philos->sync);
+			if (ready == false)
+				break ;
+			my_usleep(1, philos);
+		}
 	}
 	else if (wait == 0)
 	{
