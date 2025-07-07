@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:35:33 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/05 14:06:39 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/07 17:43:11 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,11 @@
 
 # include <unistd.h>
 # include <stdio.h>
-# include <string.h>
 # include <stdlib.h>
 # include <sys/time.h>
 # include <pthread.h>
-# include <stdbool.h>
 
-# define PHILO_MAX 200
+# define PHILO_MAX 250
 
 typedef struct s_philos
 {
@@ -35,13 +33,10 @@ typedef struct s_philos
 	int				meals_eaten;
 	size_t			last_meal;
 	size_t			dinner_start;
-	bool			*dead_flag;
-	bool			eating;
-	bool			threads_ready;
-	pthread_mutex_t	*sync;
+	int				*dead_flag;
+	int				eating;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*death;
-	pthread_mutex_t	*eating_lock;
 	pthread_mutex_t	*meal;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
@@ -49,10 +44,8 @@ typedef struct s_philos
 
 typedef struct s_meal
 {
-	bool			dead_flag;
-	pthread_mutex_t	sync;
+	int				dead_flag;
 	pthread_mutex_t	death;
-	pthread_mutex_t	eating_lock;
 	pthread_mutex_t	meal;
 	pthread_mutex_t	print;
 	t_philos		*philos;
@@ -71,7 +64,7 @@ void	init_input(t_philos *philos, char **av);
 
 //routine.c
 void	*routine(void *arg);
-bool	dead_check(t_philos *philos);
+int		dead_check(t_philos *philos);
 void	start_meal(t_meal *meal, pthread_mutex_t *forks);
 void	grab_forks(t_philos *philos);
 void	release_forks(t_philos *philos);
@@ -83,15 +76,14 @@ void	sleeping(t_philos *philos);
 
 //waiter.c
 void	*waiter(void *arg);
-bool	starved(t_philos *philos, size_t time_to_die);
-bool	funeral(t_philos *philos);
-bool	no_more_food(t_philos *philos);
+int		starved(t_philos *philos, size_t time_to_die);
+int		funeral(t_philos *philos);
+int		no_more_food(t_philos *philos);
 void	speak(char *msg, t_philos *philos, int id);
 
 //time.c
 size_t	get_time(void);
-int		my_usleep(size_t milisec, t_philos *philos);
-void	sync_threads(t_philos *philos, int wait);
+int		my_usleep(size_t milliseconds);
 
 //utils.c
 long	ft_atol(const char *nptr);

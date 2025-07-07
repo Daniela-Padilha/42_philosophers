@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/05 18:53:24 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/07 17:45:06 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,37 +19,32 @@ void	*waiter(void *arg)
 	t_philos	*philos;
 
 	philos = (t_philos *)arg;
-	sync_threads(philos, 1);
 	while (1)
 	{
-		if (funeral(philos) || no_more_food(philos))
+		if (funeral(philos) == 1 || no_more_food(philos) == 1)
 			break ;
-		my_usleep(1, philos);
 	}
 	return (arg);
 }
 
 //Check if philo died of starvation
 
-bool	starved(t_philos *philos, size_t time_to_die)
+int	starved(t_philos *philos, size_t time_to_die)
 {
-	size_t	time_since_meal;
-	bool	is_eating;
-
 	pthread_mutex_lock(philos->meal);
-	time_since_meal = get_time() - philos->last_meal;
+	if (get_time() - philos->last_meal >= time_to_die
+		&& philos->eating == 0)
+		{
+			pthread_mutex_unlock(philos->meal);
+			return (1);
+		}
 	pthread_mutex_unlock(philos->meal);
-	pthread_mutex_lock(philos->eating_lock);
-	is_eating = philos->eating;
-	pthread_mutex_unlock(philos->eating_lock);
-	if (time_since_meal >= time_to_die && is_eating == false)
-		return (true);
-	return (false);
+	return (0);
 }
 
 //Changes the flag of a dead philo and prints message
 
-bool	funeral(t_philos *philos)
+int	funeral(t_philos *philos)
 {
 	int	i;
 
@@ -60,18 +55,18 @@ bool	funeral(t_philos *philos)
 		{
 			speak("died", &philos[i], philos[i].id);
 			pthread_mutex_lock(philos[0].death);
-			*philos->dead_flag = true;
+			*philos->dead_flag = 1;
 			pthread_mutex_unlock(philos[0].death);
-			return (true);
+			return (1);
 		}
 		i++;
 	}
-	return (false);
+	return (0);
 }
 
 //Checks if everyone ate total_meals
 
-bool	no_more_food(t_philos *philos)
+int	no_more_food(t_philos *philos)
 {
 	int	i;
 	int	done_eating;
@@ -79,7 +74,7 @@ bool	no_more_food(t_philos *philos)
 	i = 0;
 	done_eating = 0;
 	if (philos[0].total_meals == -1)
-		return (false);
+		return (0);
 	while (i < philos[0].total_philos)
 	{
 		pthread_mutex_lock(philos[i].meal);
@@ -91,11 +86,11 @@ bool	no_more_food(t_philos *philos)
 	if (done_eating == philos[0].total_philos)
 	{
 		pthread_mutex_lock(philos[0].death);
-		*philos->dead_flag = true;
+		*philos->dead_flag = 1;
 		pthread_mutex_unlock(philos[0].death);
-		return (true);
+		return (1);
 	}
-	return (false);
+	return (0);
 }
 
 //Prints log
