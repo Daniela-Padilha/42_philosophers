@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:59:20 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/05 18:50:30 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/07 12:40:05 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ int	my_usleep(size_t milisec, t_philos *philos)
 void	sync_threads(t_philos *philos, int wait)
 {
 	bool	ready;
-	
+
 	if (wait == 1)
 	{
 		while (1)
 		{
 			pthread_mutex_lock(philos->sync);
-				ready = philos->threads_ready;
+			ready = philos->threads_ready;
 			pthread_mutex_unlock(philos->sync);
 			if (ready == false)
 				break ;
