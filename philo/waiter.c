@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   waiter.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/07 17:45:06 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/08 01:12:33 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,92 +16,83 @@
 
 void	*waiter(void *arg)
 {
-	t_philos	*philos;
+	t_meal	*meal;
 
-	philos = (t_philos *)arg;
+	meal = (t_meal *)arg;
 	while (1)
 	{
-		if (funeral(philos) == 1 || no_more_food(philos) == 1)
-			break ;
+		if (funeral(meal->philos, meal) || no_more_food(meal->philos, meal))
+			return (NULL);
+		my_usleep(1000, meal->philos);
 	}
 	return (arg);
 }
 
 //Check if philo died of starvation
 
-int	starved(t_philos *philos, size_t time_to_die)
+bool	starved(t_philos *philos, t_meal *meal, size_t time_to_die)
 {
-	pthread_mutex_lock(philos->meal);
-	if (get_time() - philos->last_meal >= time_to_die
-		&& philos->eating == 0)
-		{
-			pthread_mutex_unlock(philos->meal);
-			return (1);
-		}
-	pthread_mutex_unlock(philos->meal);
-	return (0);
+	size_t	time_since_meal;
+	bool	is_eating;
+
+	pthread_mutex_lock(&meal->meal_lock);
+	time_since_meal = get_time() - philos->last_meal;
+	pthread_mutex_unlock(&meal->meal_lock);
+	pthread_mutex_lock(&meal->eating_lock);
+	is_eating = philos->eating;
+	pthread_mutex_unlock(&meal->eating_lock);
+	if (time_since_meal >= time_to_die && is_eating == false)
+		return (true);
+	return (false);
 }
 
 //Changes the flag of a dead philo and prints message
 
-int	funeral(t_philos *philos)
+bool	funeral(t_philos *philos, t_meal *meal)
 {
 	int	i;
 
 	i = 0;
-	while (i < philos[0].total_philos)
+	while (i < meal->total_philos)
 	{
-		if (starved(&philos[i], philos[i].time_to_die))
+		if (starved(&philos[i], meal, meal->time_to_die))
 		{
 			speak("died", &philos[i], philos[i].id);
-			pthread_mutex_lock(philos[0].death);
-			*philos->dead_flag = 1;
-			pthread_mutex_unlock(philos[0].death);
-			return (1);
+			pthread_mutex_lock(&meal->death_lock);
+			*philos->dead_flag = true;
+			pthread_mutex_unlock(&meal->death_lock);
+			return (true);
 		}
 		i++;
 	}
-	return (0);
+	return (false);
 }
 
 //Checks if everyone ate total_meals
 
-int	no_more_food(t_philos *philos)
+bool	no_more_food(t_philos *philos, t_meal *meal)
 {
 	int	i;
 	int	done_eating;
 
 	i = 0;
 	done_eating = 0;
-	if (philos[0].total_meals == -1)
-		return (0);
-	while (i < philos[0].total_philos)
+	if (meal->total_meals == -1)
+		return (false);
+	while (i < meal->total_philos)
 	{
-		pthread_mutex_lock(philos[i].meal);
-		if (philos[i].meals_eaten >= philos[i].total_meals)
+		pthread_mutex_lock(&meal->meal_lock);
+		if (philos[i].meals_eaten >= meal->total_meals)
 			done_eating++;
-		pthread_mutex_unlock(philos[i].meal);
+		pthread_mutex_unlock(&meal->meal_lock);
 		i++;
 	}
-	if (done_eating == philos[0].total_philos)
+	if (done_eating == meal->total_philos)
 	{
-		pthread_mutex_lock(philos[0].death);
-		*philos->dead_flag = 1;
-		pthread_mutex_unlock(philos[0].death);
-		return (1);
+		pthread_mutex_lock(&meal->death_lock);
+		*philos->dead_flag = true;
+		pthread_mutex_unlock(&meal->death_lock);
+		return (true);
 	}
-	return (0);
-}
-
-//Prints log
-
-void	speak(char *msg, t_philos *philos, int id)
-{
-	size_t	time;
-
-	pthread_mutex_lock(philos->print);
-	time = get_time() - philos->dinner_start;
-	if (!dead_check(philos))
-		printf("%zu		%i %s\n", time, id, msg);
-	pthread_mutex_unlock(philos->print);
+	return (false);
 }
