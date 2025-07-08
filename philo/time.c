@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:59:20 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/08 00:37:09 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/08 23:16:16 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,13 @@ size_t	get_time(void)
 
 //Improved sleep function
 
-int	my_usleep(size_t micro, t_philos *philos)
+int	my_usleep(size_t micro)
 {
 	size_t	start;
 
 	start = get_time();
 	while ((get_time() - start) < micro)
-	{
-		if (dead_check(philos))
-			break ;
 		usleep(50);
-	}
 	return (0);
 }
 

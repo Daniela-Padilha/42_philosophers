@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:16:53 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/08 00:40:04 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/08 23:14:07 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,25 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-//Prints log
+//frees memory and destroys mutexes
 
-void	speak(char *msg, t_meal *meal, int id)
+void	free_and_destroy(char *err, t_meal *meal, pthread_mutex_t *forks)
 {
-	size_t	time;
+	int	i;
 
-	pthread_mutex_lock(&meal->print);
-	time = get_time() - meal->dinner_start;
-	if (!dead_check(meal->philos))
-		printf("%zu		%i %s\n", time, id, msg);
-	pthread_mutex_unlock(&meal->print);
+	i = 0;
+	if (err)
+	{
+		write(2, err, ft_strlen(err));
+		write(2, "\n", 1);
+	}
+	pthread_mutex_destroy(&meal->print);
+	pthread_mutex_destroy(&meal->death);
+	pthread_mutex_destroy(&meal->meal);
+	pthread_mutex_destroy(&meal->eating_lock);
+	while (i < meal->philos[0].total_philos)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		i++;
+	}
 }
