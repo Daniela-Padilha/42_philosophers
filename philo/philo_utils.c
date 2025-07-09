@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:16:53 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/08 23:14:07 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/09 00:11:09 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	free_and_destroy(char *err, t_meal *meal, pthread_mutex_t *forks)
 	pthread_mutex_destroy(&meal->print);
 	pthread_mutex_destroy(&meal->death);
 	pthread_mutex_destroy(&meal->meal);
+	pthread_mutex_destroy(&meal->start_lock);
 	pthread_mutex_destroy(&meal->eating_lock);
 	while (i < meal->philos[0].total_philos)
 	{

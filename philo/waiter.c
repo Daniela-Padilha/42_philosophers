@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/08 23:27:14 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/09 00:59:35 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ void	*waiter(void *arg)
 	{
 		if (funeral(philos) == true || no_more_food(philos) == true)
 			break ;
-		my_usleep(500);
+		my_usleep(100, philos);
 	}
 	return (arg);
 }
 
 //Check if philo died of starvation
 
-bool	starved(t_philos *philos, size_t time_to_die)
+bool	starved(t_philos *philos, time_t time_to_die)
 {
-	size_t	time_since_meal;
+	time_t	time_since_meal;
 	bool	is_eating;
 
 	pthread_mutex_lock(philos->meal);

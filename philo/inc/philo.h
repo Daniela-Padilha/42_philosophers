@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:35:33 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/08 23:12:27 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/09 00:57:24 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,30 @@ typedef struct s_philos
 	pthread_t		thread;
 	int				id;
 	int				total_philos;
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
+	time_t			time_to_die;
+	time_t			time_to_eat;
+	time_t			time_to_sleep;
 	int				total_meals;
 	int				meals_eaten;
-	size_t			last_meal;
-	size_t			dinner_start;
+	time_t			last_meal;
+	time_t			dinner_start;
 	bool			*dead_flag;
+	bool			*start_bool;
 	bool			eating;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*death;
 	pthread_mutex_t	*eating_lock;
 	pthread_mutex_t	*meal;
+	pthread_mutex_t	*start_lock;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*left_fork;
 }	t_philos;
 
 typedef struct s_meal
 {
+	bool			start_bool;
 	bool			dead_flag;
+	pthread_mutex_t	start_lock;
 	pthread_mutex_t	death;
 	pthread_mutex_t	eating_lock;
 	pthread_mutex_t	meal;
@@ -80,14 +84,14 @@ void	sleeping(t_philos *philos);
 
 //waiter.c
 void	*waiter(void *arg);
-bool	starved(t_philos *philos, size_t time_to_die);
+bool	starved(t_philos *philos, time_t time_to_die);
 bool	funeral(t_philos *philos);
 bool	no_more_food(t_philos *philos);
 void	speak(char *msg, t_philos *philos, int id);
 
 //time.c
-size_t	get_time(void);
-int		my_usleep(size_t milisec);
+time_t	get_time(void);
+int		my_usleep(time_t micro, t_philos *philos);
 
 //utils
 long	ft_atol(const char *nptr);
