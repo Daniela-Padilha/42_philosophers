@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   waiter.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:48:03 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/09 00:59:35 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:13:19 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	starved(t_philos *philos, time_t time_to_die)
 	bool	is_eating;
 
 	pthread_mutex_lock(philos->meal);
-	time_since_meal =  get_time() - philos->last_meal;
+	time_since_meal = get_time() - philos->last_meal;
 	pthread_mutex_unlock(philos->meal);
 	pthread_mutex_lock(philos->eating_lock);
 	is_eating = philos->eating;

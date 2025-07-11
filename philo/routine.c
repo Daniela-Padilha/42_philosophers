@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ddo-carm <ddo-carm@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:36:54 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/09 00:58:11 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:16:24 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	*routine(void *arg)
 	}
 	if (philos->id % 2 == 0)
 		my_usleep(philos->time_to_eat / 2, philos);
+	if (philos->total_philos == 1)
+		grab_forks(philos);
 	while (!dead_check(philos))
 	{
 		eat(philos);
@@ -68,19 +70,19 @@ void	grab_forks(t_philos *philos)
 		return ;
 	}
 	if (philos->id % 2 == 0)
-    {
-        pthread_mutex_lock(philos->right_fork);
-        speak("has taken a fork", philos, philos->id);
-        pthread_mutex_lock(philos->left_fork);
-        speak("has taken a fork", philos, philos->id);
-    }
+	{
+		pthread_mutex_lock(philos->right_fork);
+		speak("has taken a fork", philos, philos->id);
+		pthread_mutex_lock(philos->left_fork);
+		speak("has taken a fork", philos, philos->id);
+	}
 	else
-    {
-        pthread_mutex_lock(philos->left_fork);
-        speak("has taken a fork", philos, philos->id);
-        pthread_mutex_lock(philos->right_fork);
-        speak("has taken a fork", philos, philos->id);
-    }
+	{
+		pthread_mutex_lock(philos->left_fork);
+		speak("has taken a fork", philos, philos->id);
+		pthread_mutex_lock(philos->right_fork);
+		speak("has taken a fork", philos, philos->id);
+	}
 }
 
 //mutexes to unlock the forks when released by a philo
@@ -100,23 +102,21 @@ void	start_meal(t_meal *meal, pthread_mutex_t *forks)
 
 	if (pthread_create(&waiter_thread, NULL, waiter, meal->philos) != 0)
 		free_and_destroy("Error: thread creation failed\n", meal, forks);
-	i = 0;
-	while (i < meal->philos[0].total_philos)
+	i = -1;
+	while (++i < meal->philos[0].total_philos)
 	{
 		if (pthread_create(&meal->philos[i].thread, NULL, routine,
 				(void *)&meal->philos[i]) != 0)
 			free_and_destroy("Error: thread creation failed\n", meal, forks);
-		i++;
 	}
 	pthread_mutex_lock(&meal->start_lock);
 	meal->start_bool = true;
 	pthread_mutex_unlock(&meal->start_lock);
-	i = 0;
-	while (i < meal->philos[0].total_philos)
+	i = -1;
+	while (++i < meal->philos[0].total_philos)
 	{
 		if (pthread_join(meal->philos[i].thread, NULL) != 0)
 			free_and_destroy("Error: thread join failed\n", meal, forks);
-		i++;
 	}
 	if (pthread_join(waiter_thread, NULL) != 0)
 		free_and_destroy("Error: thread join failed\n", meal, forks);
