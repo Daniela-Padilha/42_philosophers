@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:30:15 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/11 12:14:27 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:33:33 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,17 @@ void	sleeping(t_philos *philos)
 		speak("is sleeping", philos, philos->id);
 		my_usleep(philos->time_to_sleep, philos);
 	}
+}
+
+//1 philo case
+
+void	lonely_philo(t_philos *philos)
+{
+	pthread_mutex_lock(philos->right_fork);
+	philos->has_right = true;
+	speak("has taken a fork", philos, philos->id);
+	my_usleep(philos->time_to_die, philos);
+	pthread_mutex_unlock(philos->right_fork);
+	philos->has_right = false;
+	return ;
 }

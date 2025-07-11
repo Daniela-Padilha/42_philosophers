@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 11:57:34 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/11 11:51:59 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:34:44 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,12 @@ void	init_philos(t_philos *philos, t_meal *meal, pthread_mutex_t *forks,
 	while (i < ft_atoi(av[1]))
 	{
 		philos[i].id = i + 1;
-		init_input(&philos[i], av);
+		init_input_bools(&philos[i], av);
 		philos[i].meals_eaten = 0;
 		philos[i].last_meal = get_time();
 		philos[i].dinner_start = get_time();
 		philos[i].dead_flag = &meal->dead_flag;
 		philos[i].start_bool = &meal->start_bool;
-		philos[i].eating = false;
 		philos[i].print = &meal->print;
 		philos[i].death = &meal->death;
 		philos[i].eating_lock = &meal->eating_lock;
@@ -74,8 +73,11 @@ void	init_philos(t_philos *philos, t_meal *meal, pthread_mutex_t *forks,
 
 //Init user input
 
-void	init_input(t_philos *philos, char **av)
+void	init_input_bools(t_philos *philos, char **av)
 {
+	philos->eating = false;
+	philos->has_left = false;
+	philos->has_right = false;
 	philos->total_philos = ft_atoi(av[1]);
 	philos->time_to_die = ft_atol(av[2]) * 1000;
 	philos->time_to_eat = ft_atol(av[3]) * 1000;

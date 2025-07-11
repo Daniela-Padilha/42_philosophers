@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 14:36:54 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/11 12:16:24 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:33:15 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,24 +63,25 @@ void	grab_forks(t_philos *philos)
 {
 	if (philos->total_philos == 1)
 	{
-		pthread_mutex_lock(philos->right_fork);
-		speak("has taken a fork", philos, philos->id);
-		my_usleep(philos->time_to_die, philos);
-		pthread_mutex_unlock(philos->right_fork);
+		lonely_philo(philos);
 		return ;
 	}
 	if (philos->id % 2 == 0)
 	{
 		pthread_mutex_lock(philos->right_fork);
+		philos->has_right = true;
 		speak("has taken a fork", philos, philos->id);
 		pthread_mutex_lock(philos->left_fork);
+		philos->has_left = true;
 		speak("has taken a fork", philos, philos->id);
 	}
 	else
 	{
 		pthread_mutex_lock(philos->left_fork);
+		philos->has_left = true;
 		speak("has taken a fork", philos, philos->id);
 		pthread_mutex_lock(philos->right_fork);
+		philos->has_right = true;
 		speak("has taken a fork", philos, philos->id);
 	}
 }
@@ -89,8 +90,16 @@ void	grab_forks(t_philos *philos)
 
 void	release_forks(t_philos *philos)
 {
-	pthread_mutex_unlock(philos->left_fork);
-	pthread_mutex_unlock(philos->right_fork);
+	if (philos->has_left)
+	{
+		pthread_mutex_unlock(philos->left_fork);
+		philos->has_left = false;
+	}
+	if (philos->has_right)
+	{
+		pthread_mutex_unlock(philos->right_fork);
+		philos->has_right = false;
+	}
 }
 
 //Create threads

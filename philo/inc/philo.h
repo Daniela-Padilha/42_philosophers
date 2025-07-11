@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 16:35:33 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/11 12:06:15 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/11 12:34:57 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef struct s_philos
 	bool			*dead_flag;
 	bool			*start_bool;
 	bool			eating;
+	bool			has_left;
+	bool			has_right;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*death;
 	pthread_mutex_t	*eating_lock;
@@ -68,7 +70,7 @@ void	init_meal(t_meal *meal, t_philos *philos);
 void	init_forks(pthread_mutex_t *forks, int total_philos);
 void	init_philos(t_philos *philos, t_meal *meal,
 			pthread_mutex_t *forks, char **av);
-void	init_input(t_philos *philos, char **av);
+void	init_input_bools(t_philos *philos, char **av);
 
 //routine
 void	*routine(void *arg);
@@ -81,6 +83,7 @@ void	release_forks(t_philos *philos);
 void	think(t_philos *philos);
 void	eat(t_philos *philos);
 void	sleeping(t_philos *philos);
+void	lonely_philo(t_philos *philos);
 
 //waiter.c
 void	*waiter(void *arg);
