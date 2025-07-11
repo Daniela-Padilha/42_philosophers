@@ -6,7 +6,7 @@
 /*   By: ddo-carm <ddo-carm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 17:30:15 by ddo-carm          #+#    #+#             */
-/*   Updated: 2025/07/11 12:33:33 by ddo-carm         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:57:03 by ddo-carm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	eat(t_philos *philos)
 			grab_forks(philos);
 			return ;
 		}
+		grab_forks(philos);
 		pthread_mutex_lock(philos->eating_lock);
 		philos->eating = true;
 		pthread_mutex_unlock(philos->eating_lock);
